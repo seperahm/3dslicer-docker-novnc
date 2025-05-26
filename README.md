@@ -20,7 +20,7 @@ A containerized 3D Slicer application accessible via web browser using noVNC, wi
 
 1. **Clone this repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/seperahm/3dslicer-docker-novnc.git
    ```
 
 2. **Build and start the containers**:
