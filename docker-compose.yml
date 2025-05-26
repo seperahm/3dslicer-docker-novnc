@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  slicer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 3dslicer-novnc
+    container_name: slicer-app
+    volumes:
+      - slicer-data:/data
+    networks:
+      - slicer-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
+
+  slicer-web:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: 3dslicer-nginx
+    container_name: slicer-web
+    volumes:
+      - slicer-data:/data
+    networks:
+      - slicer-net
+    ports:
+      - "8083:80"
+    restart: always
+    depends_on:
+      slicer-app:
+        condition: service_healthy
+
+networks:
+  slicer-net:
+    name: slicer-net
+
+volumes:
+  slicer-data:
+    name: slicer-data
